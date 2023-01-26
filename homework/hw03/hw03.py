@@ -24,8 +24,11 @@ def num_eights(pos):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
 
+    if pos != 8:
+        return 0
+    else:
+        return int(pos%10 == 8) + num_eights(pos//10)
 
 def pingpong(n):
     """Return the nth element of the ping-pong sequence.
@@ -61,6 +64,39 @@ def pingpong(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    def num_switch(i):
+        if num_eights(i // 10) != 0 and i % 10 != 0:
+            return i
+        else:
+            if i % 40 <= 7:
+                return 8 * (i // 40)
+            elif i % 40 <= 15:
+                return 8 * (i // 40) + 1
+            elif i % 40  <= 17:
+                return 8 * (i // 40) + 2
+            elif i % 40 <= 23:
+                return 8 * (i // 40) + 3
+            elif i % 40 <= 27:
+                return 8 * (i // 40) + 4
+            elif i % 40 <= 31:
+                return 8 * (i // 40) + 5
+            elif i % 40 <= 37:
+                return 8 * (i // 40) + 6
+            elif i % 40 <= 39:
+                return 8 * (i // 40) + 7
+            else:
+                return 8 * (i // 40) + 8
+
+    def isAdd(i):
+        if num_switch(i) % 2 == 0:
+            return 1
+        else:
+            return -1
+
+    if n < 9:
+        return n
+    else:
+        return isAdd(n-1) + pingpong(n-1)
 
 
 def next_larger_coin(coin):
@@ -117,7 +153,17 @@ def count_coins(change):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(min_coin, amount):
+        if amount < 0 or min_coin is None or min_coin > amount:
+            return 0
+        if amount == 0 or min_coin == amount:
+            return 1
+        else:
+            with_min_coin = helper(min_coin, amount - min_coin)
+            without_min_coin = helper(next_larger_coin(min_coin), amount)
+            return with_min_coin + without_min_coin
 
+    return helper(1, change)
 
 anonymous = False  # Change to True if you would like to remain anonymous on the final leaderboard.
 
